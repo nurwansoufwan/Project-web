@@ -2,9 +2,6 @@
 
 @section('title', 'Beranda')
 
-@section('page-pretitle')
-    <div class="page-pretitle">Ikhtisar</div>
-@endsection
 
 @section('page-title', 'Dashboard Rental')
 
