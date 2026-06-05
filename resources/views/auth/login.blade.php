@@ -177,9 +177,6 @@
                         <button type="submit" class="btn btn-auth-primary d-flex align-items-center justify-content-center">
                             Masuk <i class="ti ti-arrow-right ms-2 fs-3"></i>
                         </button>
-                        <a href="/" class="btn btn-auth-secondary d-flex align-items-center justify-content-center">
-                            Kembali ke Beranda
-                        </a>
                     </div>
                 </form>
             </div>

@@ -9,6 +9,17 @@
 @section('page-title', 'Dashboard Rental')
 
 @section('page-actions')
+    <div class="d-none d-sm-inline-flex align-items-center me-3">
+        <span class="text-secondary small me-2"><i class="ti ti-palette me-1"></i> Tema:</span>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-primary px-3" id="dash-theme-light" onclick="setThemeMode('light', event)">
+                <i class="ti ti-sun me-1"></i> Terang
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary px-3" id="dash-theme-dark" onclick="setThemeMode('dark', event)">
+                <i class="ti ti-moon me-1"></i> Gelap
+            </button>
+        </div>
+    </div>
     <a href="{{ route('rentals.create') }}" class="btn btn-primary d-none d-sm-inline-block">
         <i class="ti ti-plus me-2"></i> Transaksi Sewa Baru
     </a>

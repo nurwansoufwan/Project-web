@@ -45,4 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/rentals/{rental}', [RentalController::class, 'show'])->name('rentals.show');
     Route::post('/rentals/{rental}/pay', [RentalController::class, 'markAsPaid'])->name('rentals.pay');
     Route::post('/rentals/{rental}/return', [RentalController::class, 'processReturn'])->name('rentals.return');
+
+    // Pengaturan / Ganti Password
+    Route::get('/settings', [AuthController::class, 'showSettings'])->name('settings.show');
+    Route::post('/settings/password', [AuthController::class, 'updatePassword'])->name('settings.password.update');
 });

@@ -188,6 +188,11 @@
     @yield('styles')
 </head>
 <body>
+    <script>
+        // Set theme immediately to prevent flashing
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-bs-theme', savedTheme);
+    </script>
     <div class="page">
         <!-- Horizontal Navbar -->
         <header class="navbar navbar-expand-md d-print-none navbar-light">
@@ -205,6 +210,15 @@
                 </h1>
                 
                 <div class="navbar-nav flex-row order-md-last">
+                    <!-- Theme Toggle Option in Header -->
+                    <div class="nav-item d-flex me-3">
+                        <a href="#" class="nav-link px-0" id="btn-theme-dark" title="Mode Gelap" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="setThemeMode('dark', event)">
+                            <i class="ti ti-moon fs-2"></i>
+                        </a>
+                        <a href="#" class="nav-link px-0 d-none" id="btn-theme-light" title="Mode Terang" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="setThemeMode('light', event)">
+                            <i class="ti ti-sun fs-2"></i>
+                        </a>
+                    </div>
                     <!-- User Profile Dropdown -->
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
@@ -215,7 +229,7 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="#" class="dropdown-item"><i class="ti ti-settings me-2"></i> Pengaturan</a>
+                            <a href="{{ route('settings.show') }}" class="dropdown-item"><i class="ti ti-settings me-2"></i> Pengaturan</a>
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
@@ -410,6 +424,51 @@
                     });
                 }
             });
+        });
+    </script>
+    <script>
+        function setThemeMode(theme, event) {
+            if (event) event.preventDefault();
+            document.body.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeToggleButtons(theme);
+        }
+
+        function updateThemeToggleButtons(theme) {
+            const btnDark = document.getElementById('btn-theme-dark');
+            const btnLight = document.getElementById('btn-theme-light');
+            if (btnDark && btnLight) {
+                if (theme === 'dark') {
+                    btnDark.classList.add('d-none');
+                    btnLight.classList.remove('d-none');
+                } else {
+                    btnLight.classList.add('d-none');
+                    btnDark.classList.remove('d-none');
+                }
+            }
+
+            // Sync with dashboard buttons if they exist
+            const dashDark = document.getElementById('dash-theme-dark');
+            const dashLight = document.getElementById('dash-theme-light');
+            if (dashDark && dashLight) {
+                if (theme === 'dark') {
+                    dashDark.classList.add('active', 'btn-primary');
+                    dashDark.classList.remove('btn-outline-primary');
+                    dashLight.classList.remove('active', 'btn-primary');
+                    dashLight.classList.add('btn-outline-primary');
+                } else {
+                    dashLight.classList.add('active', 'btn-primary');
+                    dashLight.classList.remove('btn-outline-primary');
+                    dashDark.classList.remove('active', 'btn-primary');
+                    dashDark.classList.add('btn-outline-primary');
+                }
+            }
+        }
+
+        // Initialize theme toggle state
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            updateThemeToggleButtons(currentTheme);
         });
     </script>
     @yield('scripts')
