@@ -184,6 +184,30 @@
                 box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
             }
         }
+
+        /* Dark Theme overrides for alerts */
+        [data-bs-theme="dark"] .premium-alert {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        [data-bs-theme="dark"] .premium-alert-danger {
+            border-left: 5px solid #ef4444 !important;
+            background: linear-gradient(90deg, rgba(220, 38, 38, 0.15) 0%, rgba(20, 20, 25, 0.95) 100%) !important;
+        }
+
+        [data-bs-theme="dark"] .premium-alert-warning {
+            border-left: 5px solid #ef4444 !important;
+            background: linear-gradient(90deg, rgba(220, 38, 38, 0.15) 0%, rgba(20, 20, 25, 0.95) 100%) !important;
+        }
+
+        [data-bs-theme="dark"] .premium-alert .text-secondary {
+            color: #cbd5e1 !important;
+        }
+
+        [data-bs-theme="dark"] .premium-alert strong:not(.text-danger) {
+            color: #f8fafc !important;
+        }
     </style>
     @yield('styles')
 </head>
