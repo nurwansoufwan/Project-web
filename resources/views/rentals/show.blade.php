@@ -238,12 +238,16 @@
                             </div>
                         @endif
 
-                        <p class="text-secondary small">Klik tombol di bawah ketika pelanggan mengembalikan seluruh barang sewaan. Stok alat camping akan otomatis dikembalikan ke sistem.</p>
                         <form action="{{ route('rentals.return', $rental->id) }}" method="POST">
                             @csrf
+                            <div class="mb-3">
+                                <label class="form-label required">Tanggal Pengembalian Aktual</label>
+                                <input type="date" name="actual_return_date" class="form-control" value="{{ now()->toDateString() }}" required>
+                            </div>
+                            <p class="text-secondary small">Tentukan tanggal pengembalian di atas. Sistem akan secara otomatis menghitung denda jika melebihi batas jatuh tempo.</p>
                             <button type="submit" class="btn btn-primary w-100 confirm-action" 
                                     data-confirm-title="Pengembalian Alat Camping" 
-                                    data-confirm-message="Apakah Anda yakin ingin memproses pengembalian alat camping dan menghitung denda?" 
+                                    data-confirm-message="Apakah Anda yakin ingin memproses pengembalian alat camping dengan tanggal tersebut?" 
                                     data-confirm-button-text="Ya, Kembalikan" 
                                     data-cancel-button-text="Batal">
                                 <i class="ti ti-arrow-back-up me-2"></i> Proses Pengembalian Alat

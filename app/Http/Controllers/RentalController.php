@@ -157,13 +157,13 @@ class RentalController extends Controller
         $rental->load('customer', 'details.equipment');
         
         // Calculate rental days duration
-        $days = max(1, $rental->rental_date->diffInDays($rental->return_date));
+        $days = max(1, (int)abs($rental->rental_date->startOfDay()->diffInDays($rental->return_date->startOfDay(), false)));
         
         // Estimate fine if late today (if status is still active)
         $estimatedFine = 0;
         $lateDays = 0;
         if ($rental->status === 'active' && now()->toDateString() > $rental->return_date->toDateString()) {
-            $lateDays = now()->diffInDays($rental->return_date);
+            $lateDays = (int)abs(now()->startOfDay()->diffInDays($rental->return_date->startOfDay(), false));
             $totalQty = $rental->details->sum('quantity');
             $estimatedFine = $lateDays * $totalQty * 15000; // Rp 15,000 / day / item
         }
@@ -177,7 +177,7 @@ class RentalController extends Controller
         return redirect()->route('rentals.show', $rental->id)->with('success', 'Pembayaran transaksi telah berhasil dikonfirmasi LUNAS.');
     }
 
-    public function processReturn(Rental $rental)
+    public function processReturn(Request $request, Rental $rental)
     {
         if ($rental->status === 'completed') {
             return redirect()->route('rentals.show', $rental->id)->with('error', 'Transaksi ini sudah selesai dikembalikan.');
@@ -185,16 +185,16 @@ class RentalController extends Controller
 
         $rental->load('details');
         
-        $actualReturnDate = now()->toDateString();
+        $actualReturnDate = $request->input('actual_return_date', now()->toDateString());
         $returnDate = $rental->return_date->toDateString();
         
         $fineAmount = 0;
         $lateDays = 0;
 
         if ($actualReturnDate > $returnDate) {
-            $actualReturn = Carbon::parse($actualReturnDate);
-            $expectedReturn = Carbon::parse($returnDate);
-            $lateDays = $actualReturn->diffInDays($expectedReturn);
+            $actualReturn = Carbon::parse($actualReturnDate)->startOfDay();
+            $expectedReturn = Carbon::parse($returnDate)->startOfDay();
+            $lateDays = (int)abs($actualReturn->diffInDays($expectedReturn, false));
             
             // Calculate total quantity of items rented
             $totalQty = $rental->details->sum('quantity');

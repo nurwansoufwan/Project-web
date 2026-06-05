@@ -104,7 +104,7 @@
                                     Rp {{ number_format($rent->fine_amount, 0, ',', '.') }}
                                 @elseif($rent->status === 'active' && now()->toDateString() > $rent->return_date->toDateString())
                                     @php
-                                        $lateDays = now()->diffInDays($rent->return_date);
+                                        $lateDays = (int)abs(now()->startOfDay()->diffInDays($rent->return_date->startOfDay(), false));
                                         $totalQty = $rent->details->sum('quantity');
                                         $estFine = $lateDays * $totalQty * 15000;
                                     @endphp
